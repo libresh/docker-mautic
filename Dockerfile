@@ -24,8 +24,11 @@ ENV COMPOSER_HOME /root/composer
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
 # RUN a2enmod rewrite
+
+RUN docker-php-ext-configure imap --with-imap --with-imap-ssl --with-kerberos
+
 RUN docker-php-ext-install \
-    imap \
+   imap \
     intl \
     iconv \
     mcrypt \
