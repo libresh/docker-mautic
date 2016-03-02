@@ -1,5 +1,6 @@
 FROM php:5.6-apache
-#update repo
+
+MAINTAINER nicky.gurbani@gmail.com
 
 RUN apt-get update && apt-get install -y \
         libc-client-dev \
@@ -10,25 +11,14 @@ RUN apt-get update && apt-get install -y \
         zip \
         curl \
         git \
-       unzip 
+        unzip 
 
-#Download dependencies
-
-# Set memory limit
-RUN echo "memory_limit=1024M" > /usr/local/etc/php/conf.d/memory-limit.ini
-
-# Set environmental variables
-ENV COMPOSER_HOME /root/composer
-
-# Install Composer
-RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
-
-# RUN a2enmod rewrite
+RUN a2enmod rewrite
 
 RUN docker-php-ext-configure imap --with-imap --with-imap-ssl --with-kerberos
 
 RUN docker-php-ext-install \
-   imap \
+    imap \
     intl \
     iconv \
     mcrypt \
@@ -39,9 +29,8 @@ RUN docker-php-ext-install \
     pdo \
     pdo_mysql \
     pdo_mysql
-
-#VOLUME /var/www/html
-
+    
+VOLUME /var/www/html
 
 # Define Mautic version and expected SHA1 signature
 ENV MAUTIC_VERSION 1.2.4
